@@ -23,7 +23,7 @@ jobs:
         target: "/opt/infra-saas/landing/site"
         strip_components: 0
 
-    - name: Reload Nginx configuration
+    - name: Restart Docker Compose service to apply changes
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -31,10 +31,12 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
-          # Check if the container is running before attempting to reload
-          if docker ps -f name=flowdots-landing-prod --format "{{.Names}}" | grep -q "flowdots-landing-prod"; then
-            echo "Container 'flowdots-landing-prod' is running. Attempting Nginx reload."
-            docker exec flowdots-landing-prod nginx -s reload
-          else
-            echo "Container 'flowdots-landing-prod' is not running. No Nginx reload performed."
-          fi
+          # Navigate to the directory containing your docker-compose.yml file
+          cd /opt/infra-saas/landing/
+
+          # Bring the service up. Docker Compose will detect volume changes
+          # and recreate the 'landing' service if necessary to apply them.
+          # The -d flag runs in detached mode.
+          echo "Bringing up docker-compose service 'landing' to apply changes..."
+          docker compose down && docker compose up -d
+          echo "Docker Compose service update initiated."

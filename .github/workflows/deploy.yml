@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: FlowDots
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4

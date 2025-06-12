@@ -13,12 +13,13 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    - name: Deploy via SSH and Rsync
-      uses: appleboy/ssh-action@v1.0.3
+    - name: Deploy files via SCP
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
-        port: 22  # Change this if your SSH server uses a custom port
-        script: |
-          rsync -avz --delete ./ /opt/infra-saas/landing/site
+        port: 22
+        source: "index.html,nginx.conf,styles.css" 
+        target: "/opt/infra-saas/landing/site"
+        strip_components: 0

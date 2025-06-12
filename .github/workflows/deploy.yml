@@ -21,4 +21,4 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22  # Change this if your SSH server uses a custom port
         script: |
-          rsync -avz --delete ./ /opt/infra-saas/landing/flowdots-landing
+          rsync -avz --delete ./ /opt/infra-saas/landing/site

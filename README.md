@@ -1,3 +1,3 @@
 # FlowDots Landing Page
 
-This is FlowDots.
+This is FlowDots, automation powered by AI.

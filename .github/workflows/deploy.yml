@@ -22,3 +22,19 @@ jobs:
         source: "index.html,nginx.conf,styles.css" 
         target: "/opt/infra-saas/landing/site"
         strip_components: 0
+
+    - name: Reload Nginx configuration
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          # Check if the container is running before attempting to reload
+          if docker ps -f name=flowdots-landing-prod --format "{{.Names}}" | grep -q "flowdots-landing-prod"; then
+            echo "Container 'flowdots-landing-prod' is running. Attempting Nginx reload."
+            docker exec flowdots-landing-prod nginx -s reload
+          else
+            echo "Container 'flowdots-landing-prod' is not running. No Nginx reload performed."
+          fi

@@ -1,4 +1,4 @@
-# FlowDots - Landing Page
+# FlowDots: Landing Page
 
 > *We join the dots for you*
 
